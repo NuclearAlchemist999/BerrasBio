@@ -1,0 +1,27 @@
+﻿@model IEnumerable<BerrasBio.Models.ConfirmationModel>
+
+@{
+    ViewData["Title"] = "Bekräftelse";
+}
+
+<div class="confirmation-container">
+<h2>Bokningsbekräftelse</h2>
+
+<div class="confirmation-info">
+@foreach (var item in Model)
+{
+    <p>Film: @item.Movie</p>
+    <p>Salong: @item.AuditoriumName</p>
+    <p>Starttid: @item.Start</p>
+    <p>Reservationsnummer: @item.ReservationId</p>
+    <p>Förnamn: @item.FirstName </p>
+    <p>Efternamn: @item.LastName </p>
+    <p>Antal platser: @item.NumberOfSeats</p>
+    <p>Totalt: @item.Price kr</p>
+
+}
+</div>
+<div class="back-to-start">
+<a asp-controller="Start" asp-action="MovieSchedule">Till startsidan</a>
+</div>
+</div>

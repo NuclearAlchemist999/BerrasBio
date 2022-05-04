@@ -1,0 +1,125 @@
+﻿@model IEnumerable<BerrasBio.Models.JoinModel>
+
+@{
+    ViewData["Title"] = "Boka";
+}
+
+<div class="form-container">
+
+
+<form method="post" action="SelectSeat">
+    <div class=form-container2>
+    <div class="select-seats">
+    <label for="seats">Välj antal platser:</label>
+    <select name="NumberOfSeats" id="seats">
+        <option value="null">----</option>
+        @foreach (var item in Model) 
+        {
+            
+            @if (item.SeatsLeft > 12)
+            {
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <option value="@i">@i</option>
+                    
+                }
+            }
+            
+            else
+            {
+                @for (int i = 1; i <= item.SeatsLeft; i++)
+                {
+                    <option value="@i">@i</option>
+                    
+                }
+            }
+        }
+    </select>
+    </div>
+    
+  
+    <div class="input-label">
+    <label for="txtFirstName">Förnamn</label>
+    <input type="text" id="txtFirstName" name="FirstName" required />
+    
+    <label for="txtLastName">Efternamn</label>
+    <input type="text" id="txtLastName" name="LastName" required />
+    <input type="hidden" value=@ViewData["scheduleId"] name="ScheduleId" />
+ 
+    <label for="txtMail">Mejladress</label>
+    <input type="email" id="txtMail" name="Mail" required />
+
+    <button type="submit">Boka</button>
+   </div>
+   
+   </div>
+ </form>
+ 
+ <div class="price-info">
+    <p id="start" class="start-time">@ViewData["start"]</p>
+    <span>Pris per biljett innan starttid 17:30:</span>
+    <span id="price">@ViewData["price"]</span>
+    <span>kr</span>
+    <p id="price-per-ticket"></p>
+    <p id="total-price" class="total-price"></p>
+
+</div>
+</div>
+ <script>
+     
+     const seatsEl = document.querySelector('#seats');
+     const price = parseFloat(document.querySelector('#price').innerText);
+     const start = document.querySelector('#start');
+     const totalPrice = document.querySelector('#total-price');
+     const ticketPrice = document.querySelector('#price-per-ticket');
+     let totalCost;
+     let singleCost;
+
+     const startText = start.textContent.slice(0, 16);
+     start.textContent = startText;
+
+     function printTotalPrice() {
+         const time = start.innerText.slice(11, 16).replace(':', '.');
+   
+         if (time <= 23.59 && time >= 17.3) {
+             totalCost = (price + 20) * seatsEl.value;
+         } else {
+             totalCost = price * seatsEl.value;
+         }
+         if (isNaN(totalCost)) {
+             totalPrice.textContent = '';
+         }
+         else {
+             totalPrice.textContent = `Totalt: ${totalCost} kr`;
+         }
+     }
+
+     seatsEl.addEventListener("change", () => {
+         printTotalPrice();
+         pricePerTicket();
+     });
+     
+
+     function pricePerTicket() {
+         const time = start.innerText.slice(11, 16).replace(':', '.');
+
+         if(time <= 23.59 && time >= 17.3) {
+             singleCost = price + 20;
+         }
+         else {
+             singleCost = price;
+         }
+
+         ticketPrice.textContent = `Pris per biljett: ${singleCost} kr`;
+
+     }
+
+
+
+ </script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

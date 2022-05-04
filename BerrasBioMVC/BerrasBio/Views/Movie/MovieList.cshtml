@@ -1,0 +1,21 @@
+﻿@model IEnumerable<BerrasBio.Models.Movie>
+
+@{
+    ViewData["Title"] = "Filmer";
+}
+
+
+<div class="movie-container">
+@foreach (var item in Model)
+    {  
+        <div class="movie-item">
+            <img src="@item.PhotoURL" alt="@item.Title">
+            <div class="link-container">
+               <a asp-action="SelectTime" asp-route-id="@item.Id">Boka</a>
+            </div>
+       </div>
+    }
+</div>
+
+
+

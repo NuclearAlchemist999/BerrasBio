@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BerrasBio.Models.JoinModel>
+
+@{
+    ViewData["Title"] = "Start";
+}
+
+<h2>Filmer som visas den närmaste tiden:</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Salong</th>
+            <th>Starttid</th>
+            <th>Platser kvar</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            if (item.SeatsLeft == 0)
+            {
+                <tr class="fullseats">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AuditoriumName)
+                    </td>
+                    <td class="fullsorting">
+                        <a asp-action="MovieSchedule" asp-route-sorting="@ViewData["start"]">@Html.DisplayFor(modelItem => item.Start)</a>
+                    </td>
+                    <td class="fullsorting">
+                        <a asp-action="MovieSchedule" asp-route-sorting="@ViewData["seatsLeft"]">@Html.DisplayFor(modelItem => item.SeatsLeft)</a>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AuditoriumName)
+                    </td>
+                    <td class="sorting">
+                        <a asp-action="MovieSchedule" asp-route-sorting="@ViewData["start"]">@Html.DisplayFor(modelItem => item.Start)</a>
+                    </td>
+                    <td class="sorting">
+                        <a asp-action="MovieSchedule" asp-route-sorting="@ViewData["seatsLeft"]">@Html.DisplayFor(modelItem => item.SeatsLeft)</a>
+
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
